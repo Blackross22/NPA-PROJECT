@@ -7,3 +7,9 @@ aws_session_token = ""
 key_name = "vockey"
 
 private_key_path = ""
+
+itclass = "NPA2022"
+
+type = "Project"
+
+cName = "NPA-"
