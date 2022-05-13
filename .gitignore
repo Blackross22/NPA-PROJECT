@@ -1,2 +1,7 @@
 terraform.exe
 terraform.tfvars
+.terraform
+.terraform.lock.hcl
+NPA-Projetc.tfplan
+terraform.tfstate
+terraform.tfstate.backup
