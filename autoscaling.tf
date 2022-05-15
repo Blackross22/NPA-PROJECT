@@ -3,7 +3,7 @@
 ##################################################################################
 
 resource "aws_launch_configuration" "as_conf" {
-  name          = "web_server"
+  name_prefix =  "web_server"
   image_id      = data.aws_ami.aws-linux.id
   instance_type = var.instance_type
   security_groups = [aws_security_group.allow_ssh_web.id]

@@ -12,4 +12,8 @@ itclass = "NPA2022"
 
 type = "Project"
 
-cName = "NPA-"
+cName = "NPA"
+
+db_username = ""
+
+db_password = ""

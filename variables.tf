@@ -101,3 +101,21 @@ variable "instance_type" {
     description = "type of instance"
     default = "t2.micro"
 }
+
+variable "db_type" {
+    type        = string
+    description = "type of Database"
+    default = "db.t3.micro"
+}
+
+variable "db_username" {
+    type        = string
+    description = "Username for Database"
+    sensitive   = true
+}
+
+variable "db_password" {
+    type        = string
+    description = "Password for Database"
+    sensitive   = true
+}
