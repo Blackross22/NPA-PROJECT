@@ -119,3 +119,9 @@ variable "db_password" {
     description = "Password for Database"
     sensitive   = true
 }
+
+variable "bucket_name_prefix" {
+    type        = string
+    description = "Prefix for S3 bucket"
+    default     = "bucket"
+}
