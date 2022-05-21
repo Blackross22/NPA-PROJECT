@@ -20,11 +20,42 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
 
 resource "aws_s3_object" "website" {
   bucket = aws_s3_bucket.web_bucket.bucket
-  key    = "index.html"
-  //source = "./website/index.html"
+  key    = "WebServerExample.php"
+  source = "./WebServerExample.php"
 
   tags = local.common_tags
 
 }
+resource "aws_s3_object" "picIT" {
+  bucket = aws_s3_bucket.web_bucket.bucket
+  key    = "it-image.png"
+  source = "./it-logo.png"
 
+  tags = local.common_tags
+
+}
+resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
+  bucket = aws_s3_bucket.web_bucket.id
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+}
+
+
+data "aws_iam_policy_document" "allow_access_from_another_account" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+
+    resources = [
+      aws_s3_bucket.web_bucket.arn,
+      "${aws_s3_bucket.web_bucket.arn}/*",
+    ]
+  }
+}
 
