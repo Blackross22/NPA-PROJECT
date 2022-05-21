@@ -83,15 +83,15 @@ resource "aws_security_group" "rds" {
   vpc_id = aws_vpc.my_vpc.id
 
   ingress {
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 5432
-    to_port     = 5432
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -114,7 +114,7 @@ resource "aws_security_group" "allow_ssh_web" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [var.network_address_space]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # outbound internet access
