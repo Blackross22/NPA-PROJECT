@@ -49,10 +49,8 @@ resource "aws_instance" "Web_Server" {
       "cd /var/www",
       "mkdir inc",
       "cd inc",
-      "echo '<?php define('DB_SERVER', '${aws_db_instance.rds.address}'); define('DB_USERNAME', '${var.db_username}'); define('DB_PASSWORD', '${var.db_password}'); define('DB_DATABASE', 'dbwebserv'); ?>' > dbinfo.inc",
-      "cd ..",
-      "cd /var/www/html",
-      "wget https://${local.s3_bucket_name}s3.amazonaws.com/${aws_s3_object.website.id}"
+
+      
 
     ]
   }
