@@ -3,5 +3,7 @@ terraform.tfvars
 .terraform
 .terraform.lock.hcl
 NPA-Projetc.tfplan
+NPA-Project.tfplan
 terraform.tfstate
 terraform.tfstate.backup
+vockey.pem

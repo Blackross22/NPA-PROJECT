@@ -25,37 +25,38 @@ resource "aws_instance" "Web_Server" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh_web.id]
   subnet_id = aws_subnet.Public_Sunnet[count.index].id
-  
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ec2-user"
-    private_key = file(var.private_key_path)
 
-  }
+  user_data = <<-EOT
+  #!/bin/bash
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum update -y",
-      "sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2",
-      "sudo yum install -y httpd",
-      "sudo systemctl start httpd",
-      "sudo systemctl enable httpd",
-      "sudo usermod -a -G apache ec2-user",
-      "sudo chown -R ec2-user:apache /var/www",
-      "sudo chmod 2775 /var/www",
-      "find /var/www -type d -exec sudo chmod 2775 {} \\;",
-      "find /var/www -type f -exec sudo chmod 0664 {} \\;",
-      "cd /var/www",
-      "mkdir inc",
-      "cd inc",
-      "echo '<?php define('DB_SERVER', '${aws_db_instance.rds.address}'); define('DB_USERNAME', '${var.db_username}'); define('DB_PASSWORD', '${var.db_password}'); define('DB_DATABASE', 'dbwebserv'); ?>' > dbinfo.inc",
-      "cd ..",
-      "cd /var/www/html",
-      "wget https://${local.s3_bucket_name}s3.amazonaws.com/${aws_s3_object.website.id}"
+  sudo yum update -y
+  sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+  sudo yum install -y httpd
+  sudo systemctl start httpd
+  sudo systemctl enable httpd
+  sudo usermod -a -G apache ec2-user
+  sudo chown -R ec2-user:apache /var/www
+  sudo chmod 2775 /var/www
+  find /var/www -type d -exec sudo chmod 2775 {} \\;
+  find /var/www -type f -exec sudo chmod 0664 {} \\;
+  cd /var/www
+  mkdir inc
+  cd inc
+  cat > dbinfo.inc << EOF
+  <?php
 
-    ]
-  }
+  define('DB_SERVER', '${aws_db_instance.rds.endpoint}');
+  define('DB_USERNAME', '${var.db_username}');
+  define('DB_PASSWORD', '${var.db_password}');
+  define('DB_DATABASE', 'dbwebserv');
+
+  ?>
+  EOF
+  cd ..
+  cd /var/www/html
+  wget https://${local.s3_bucket_name}.s3.amazonaws.com/${aws_s3_object.website.id}
+  EOT
+
   tags = merge(local.common_tags, { Name = "${var.cName}-WebServer"})
 }
 
