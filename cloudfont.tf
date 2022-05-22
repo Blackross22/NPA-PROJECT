@@ -35,7 +35,7 @@ module "cdn" {
     target_origin_id           = "webELB"
     viewer_protocol_policy     = "allow-all"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD"]
     compress        = true
     query_string    = true
